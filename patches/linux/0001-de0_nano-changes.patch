@@ -1,0 +1,54 @@
+From 429769169565956c936fb03362032c28daba77e7 Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Wed, 31 Jul 2019 22:17:06 +0000
+Subject: [PATCH 1/2] de0_nano changes
+
+---
+ arch/openrisc/boot/dts/de0_nano.dts      |  2 +-
+ arch/openrisc/configs/de0_nano_defconfig | 17 ++++++++++-------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/arch/openrisc/boot/dts/de0_nano.dts b/arch/openrisc/boot/dts/de0_nano.dts
+index 42f91b51..7b0c4d26 100644
+--- a/arch/openrisc/boot/dts/de0_nano.dts
++++ b/arch/openrisc/boot/dts/de0_nano.dts
+@@ -48,7 +48,7 @@
+ 		compatible = "opencores,i2c-ocores";
+ 		reg = <0xa0000000 0x8>;
+ 		interrupts = <10>;
+-		clock-frequency = <50000000>;
++		opencores,ip-clock-frequency = <50000000>;
+ 
+ 		reg-shift = <0>;	/* 8 bit registers */
+ 		reg-io-width = <1>;	/* 8 bit read/write */
+diff --git a/arch/openrisc/configs/de0_nano_defconfig b/arch/openrisc/configs/de0_nano_defconfig
+index bf95687d..657b11da 100644
+--- a/arch/openrisc/configs/de0_nano_defconfig
++++ b/arch/openrisc/configs/de0_nano_defconfig
+@@ -3,13 +3,16 @@ CONFIG_LOCALVERSION="-de0_nano"
+ CONFIG_NO_HZ=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE="arch/openrisc/support/initramfs arch/openrisc/support/initramfs.devnodes"
+-# CONFIG_RD_GZIP is not set
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+-# CONFIG_RD_XZ is not set
+-# CONFIG_RD_LZO is not set
+-# CONFIG_RD_LZ4 is not set
++CONFIG_INITRAMFS_SOURCE="../buildroot/output/images/rootfs.cpio.gz"
++CONFIG_INITRAMFS_ROOT_UID=0
++CONFIG_INITRAMFS_ROOT_GID=0
++CONFIG_RD_GZIP=y
++CONFIG_RD_BZIP2=y
++CONFIG_RD_LZMA=y
++CONFIG_RD_XZ=y
++CONFIG_RD_LZO=y
++CONFIG_RD_LZ4=y
++CONFIG_INITRAMFS_COMPRESSION=".gz"
+ CONFIG_EXPERT=y
+ # CONFIG_KALLSYMS is not set
+ # CONFIG_EPOLL is not set
+-- 
+2.11.0
+
