@@ -1,0 +1,78 @@
+From c51ef6d3073f8dc8a8d6456c3aeae0b14c0e5e83 Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Sun, 4 Aug 2019 17:07:20 +0000
+Subject: [PATCH 3/5] enable mtd
+
+---
+ arch/openrisc/boot/dts/de0_nano.dts      | 15 +++++----------
+ arch/openrisc/configs/de0_nano_defconfig | 22 ++++++++++++++++++++++
+ 2 files changed, 27 insertions(+), 10 deletions(-)
+
+diff --git a/arch/openrisc/boot/dts/de0_nano.dts b/arch/openrisc/boot/dts/de0_nano.dts
+index 7b0c4d26..4a7b2b04 100644
+--- a/arch/openrisc/boot/dts/de0_nano.dts
++++ b/arch/openrisc/boot/dts/de0_nano.dts
+@@ -74,24 +74,19 @@
+ 		flash0: mtd@0 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+-			compatible = "spansion,s25sl064p";
++			compatible = "spansion,m25p64-nonjedec","spi-nor";
+ 			reg = <0>;
+ 			spi-max-frequency = <40000000>;
+ 			m25p,fast-read;
+ 
+ 			partition@0 {
+ 				label = "FPGA image";
+-				reg = <0x00000000 0x000b0000>;
++				reg = <0x00000000 0x00080000>;
+ 				read-only;
+ 			};
+-			partition@b0000 {
+-				label = "bootloader";
+-				reg = <0x000b0000 0x00050000>;
+-				read-only;
+-			};
+-			partition@100000 {
+-				label = "free space";
+-				reg = <0x00100000 0x00700000>;
++			partition@80000 {
++				label = "Linux image";
++				reg = <0x00080000 0x00780000>;
+ 			};
+ 		};
+ 	};
+diff --git a/arch/openrisc/configs/de0_nano_defconfig b/arch/openrisc/configs/de0_nano_defconfig
+index 657b11da..b20419f5 100644
+--- a/arch/openrisc/configs/de0_nano_defconfig
++++ b/arch/openrisc/configs/de0_nano_defconfig
+@@ -93,3 +93,25 @@ CONFIG_TMPFS=y
+ CONFIG_NFS_FS=y
+ # CONFIG_ENABLE_WARN_DEPRECATED is not set
+ # CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MTD=y
++CONFIG_MTD_OF_PARTS=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_JEDECPROBE=y
++CONFIG_MTD_GEN_PROBE=y
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_CFI_STAA=y
++CONFIG_MTD_CFI_UTIL=y
++CONFIG_MTD_RAM=y
++CONFIG_MTD_ROM=y
++CONFIG_MTD_M25P80=y
++CONFIG_MTD_SST25L=y
++CONFIG_MTD_BLOCK2MTD=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_MTD_MT81xx_NOR=y
++CONFIG_MTD_SPI_NOR_USE_4K_SECTORS=y
+\ No newline at end of file
+-- 
+2.11.0
+

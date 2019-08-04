@@ -1,7 +1,7 @@
-From 98dc95733ca34022b386e8bda2257e632ab6ef7a Mon Sep 17 00:00:00 2001
+From acc45031408a87d94b29b5f64aeddbf5cdded00e Mon Sep 17 00:00:00 2001
 From: Your Name <you@example.com>
 Date: Wed, 31 Jul 2019 23:46:38 +0000
-Subject: [PATCH 2/2] fix build
+Subject: [PATCH 2/5] fix build
 
 ---
  arch/openrisc/kernel/setup.c | 3 +++

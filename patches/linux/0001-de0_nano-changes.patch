@@ -1,7 +1,7 @@
-From 429769169565956c936fb03362032c28daba77e7 Mon Sep 17 00:00:00 2001
+From 566d5a7b84c04368c81f12ff3a8e6fd90984cea4 Mon Sep 17 00:00:00 2001
 From: Your Name <you@example.com>
 Date: Wed, 31 Jul 2019 22:17:06 +0000
-Subject: [PATCH 1/2] de0_nano changes
+Subject: [PATCH 1/5] de0_nano changes
 
 ---
  arch/openrisc/boot/dts/de0_nano.dts      |  2 +-

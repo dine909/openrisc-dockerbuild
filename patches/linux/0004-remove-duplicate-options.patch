@@ -1,0 +1,25 @@
+From 5706b1bd3aa039a9ec9d7ec9da6d4de1502179a5 Mon Sep 17 00:00:00 2001
+From: dine <dine@none>
+Date: Sun, 4 Aug 2019 23:16:20 +0000
+Subject: [PATCH 4/5] remove duplicate options
+
+---
+ arch/openrisc/configs/de0_nano_defconfig | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/openrisc/configs/de0_nano_defconfig b/arch/openrisc/configs/de0_nano_defconfig
+index b20419f5..f882eca5 100644
+--- a/arch/openrisc/configs/de0_nano_defconfig
++++ b/arch/openrisc/configs/de0_nano_defconfig
+@@ -46,8 +46,6 @@ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ # CONFIG_PREVENT_FIRMWARE_BUILD is not set
+ # CONFIG_FW_LOADER is not set
+-CONFIG_MTD=y
+-CONFIG_MTD_M25P80=y
+ # CONFIG_M25PXX_USE_FAST_READ is not set
+ CONFIG_PROC_DEVICETREE=y
+ CONFIG_EEPROM_AT24=y
+-- 
+2.11.0
+

@@ -1,6 +1,12 @@
 
 # LINUX_BRANCH=		v5.2
-GITS=	ssh://dine@192.168.1.64:/Users/dine/Documents/openriscmerge/linux;b4.9	http://github.com/buildroot/buildroot;master http://github.com/olofk/fusesoc;1.9
+include patchy.mk
+GITS=		ssh://dine@192.168.1.64:/Users/dine/Documents/openriscmerge/linux;b4.9 \
+			http://github.com/buildroot/buildroot;master \
+			http://github.com/olofk/fusesoc;1.9 \
+			https://github.com/stffrdhrn/mor1kx-generic;master \
+			https://github.com/openrisc/or1k_marocchino;master
+
 
 LINUX_DIR=linux
 
@@ -45,14 +51,17 @@ PATCH_DIR = patches
 
 VMLINUX = vmlinux
 
-.PRECIOUS = $(GCC_TARGET) src/$(LINUX_DIR)/.config src/buildroot/.config $(BR_CPIOGZ)
+SYSNAME=de0_nano_plus
+OUTPUT_SOF = build/$(SYSNAME)_0/bld-quartus/$(SYSNAME)_0.sof
+
+.PRECIOUS = $(GCC_TARGET) src/$(LINUX_DIR)/.config src/buildroot/.config $(BR_CPIOGZ) $(FUSESOC_CONF) $(FUSESOC_BIN)
 all: 
 	echo $(addsuffix -%,$(GIT_OBS))
 
 $(ALL_SRC_DIRS): 
 	@mkdir -p $(dir $@)
 	git clone -b$(call GIT_VER,$@) --depth=1 $(call GIT_URL,$@) $@ && cd $(call GIT_SRC_DIR,$@) && git checkout $(call GIT_VER,$@) && git tag origin_tag || true
-	@$(MAKE) $(call GIT_DIR,$@)-patch
+	@$(MAKE) patch-$(call GIT_DIR,$@)
 
 # linux: linux-prepare
 # 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C src/$@ all
@@ -69,20 +78,20 @@ clean-downloads:
 clean-all: clean-downloads
 	@rm -rf src
 
-reset-all: $(addsuffix -reset,$(GIT_OBS))
+reset-all: $(addprefix reset-,$(GIT_OBS))
 
-%-reset: src/%
-	@cd src/$(call WORDHY,$@,1) && git reset --hard origin_tag && git clean -dfx && git checkout origin_tag
-	@$(MAKE) $(call WORDHY,$@,1)-patch
+reset-%: src/%
+	@cd src/$(call WORDHY,$@,2) && git reset --hard origin_tag && git clean -dfx && git checkout origin_tag
+	@$(MAKE) patch-$(call WORDHY,$@,2)
 
 src/buildroot/.config: 
 	@$(MAKE) -C src/buildroot $(BR_CONFIG)_defconfig
 	@touch $@
 
-buildroot-genconfig: 
+genconfig-buildroot: 
 	grep -v ^\# src/buildroot/.config | grep  . > $(BR_CONFIG_FILE)
 
-linux-genconfig: 
+genconfig-linux: 
 	grep -v ^\# src/$(LINUX_DIR)/.config | grep  . > $(LINUX_CONFIG_FILE)
 
 
@@ -114,29 +123,34 @@ $(FUSESOC_BIN): src/fusesoc
 	@bash -c "cd src/fusesoc ; pip install -e ."
 	# @touch $@
 
-$(FUSESOC_CONF): $(FUSESOC_BIN)
-	@mkdir -p $(dir $@)
+$(FUSESOC_CONF): $(FUSESOC_BIN) src/mor1kx-generic src/or1k_marocchino
 	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc init -y
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc library add intgen https://github.com/stffrdhrn/intgen.git
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc library add de0_nano_marocchino  $(shell pwd)/systems/de0_nano_marocchino
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc library add de0_nano_plus  $(shell pwd)/systems/de0_nano_plus
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc library add mor1kx-generic  $(shell pwd)/src/mor1kx-generic
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) fusesoc library add or1k_marocchino $(shell pwd)/src/or1k_marocchino
+	@mkdir -p $(dir $@)
 	# @touch $@
 
-de0_nano: build/de0_nano_0/bld-quartus/de0_nano_0.sof
+$(SYSNAME): $(OUTPUT_SOF)
 
-build/de0_nano_0/bld-quartus/de0_nano_0.sof: $(FUSESOC_CONF)
-	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc build de0_nano
+$(OUTPUT_SOF): $(FUSESOC_CONF) 
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc build $(SYSNAME)
 
-de0_nano_pgm: $(FUSESOC_CONF)
-	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc pgm de0_nano
+# de0_nano_pgm: build/de0_nano_0/bld-quartus/de0_nano_0.sof
+	# @XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc pgm de0_nano
 
-FIND_PATCHES=$(shell find patches/$(call WORDHY,$1,1) -name *.patch | sort )
+FIND_PATCHES=$(shell find patches/$(call WORDHY,$1,2) -name *.patch | sort )
 
-%-patch: src/%
-	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,1)
-	cd src/$(call WORDHY,$@,1) && git checkout origin_tag && \
-		[ "" != "$(call FIND_PATCHES,$@)" ] &&  git am $(addprefix ../../,$(call FIND_PATCHES,$@)) || echo no patches for $(call WORDHY,$@,1)
+patch-%: src/%
+	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,2)
+	cd src/$(call WORDHY,$@,2) && git checkout origin_tag && \
+		[ "" != "$(call FIND_PATCHES,$@)" ] &&  git am $(addprefix ../../,$(call FIND_PATCHES,$@)) || echo no patches for $(call WORDHY,$@,2)
 
-%-genpatches:
-	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,1)
-	cd src/$(call WORDHY,$@,1) && git format-patch origin_tag -o ../../$(PATCH_DIR)/$(call WORDHY,$@,1)
+genpatches-%:
+	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,2)
+	cd src/$(call WORDHY,$@,2) && git format-patch origin_tag -o ../../$(PATCH_DIR)/$(call WORDHY,$@,2)
 
 buildroot-%: 
 	$(MAKE) -C src/buildroot $(call WORDHY,$@,2)
@@ -161,11 +175,14 @@ vmlinux.ub: vmlinux.bin
     -d $< \
     $@
 
-vmlinux.ub.hex: sw.ub
+vmlinux.ub.hex: vmlinux.ub
 	$(CROSS_COMPILE)objcopy -I binary -O ihex $< $@
 
-de0_nano.jic: vmlinux.ub.hex
-	quartus_wrapper quartus_cpf -c de0_nano.cof
+$(SYSNAME).jic: vmlinux.ub.hex $(OUTPUT_SOF) $(SYSNAME).cof
+	quartus_wrapper quartus_cpf -c $(SYSNAME).cof
+
+program: $(SYSNAME).jic
+	quartus_wrapper quartus_pgm -m jtag -o "ip;$<"
 
 # downloads/$(notdir %): $(ALL_DL)
 # 	@mkdir -p $(dir $@)

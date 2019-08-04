@@ -1,7 +1,7 @@
-From b1c125a22c842ce299adf6d79fa24489a763049e Mon Sep 17 00:00:00 2001
+From 02516e2a502baa206f760289f0865f1d38b85e47 Mon Sep 17 00:00:00 2001
 From: Your Name <you@example.com>
 Date: Wed, 31 Jul 2019 22:13:27 +0000
-Subject: [PATCH 2/2] change to linux v4.9
+Subject: [PATCH 2/3] change to linux v4.9
 
 ---
  configs/de0_or1k_defconfig | 10 ++++++++--
