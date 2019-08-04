@@ -1,7 +1,7 @@
 
 # LINUX_BRANCH=		v5.2
 include patchy.mk
-GITS=		ssh://dine@192.168.1.64:/Users/dine/Documents/openriscmerge/linux;b4.9 \
+GITS=		ssh://dine@192.168.1.63:/Users/dine/Documents/openriscmerge/linux;b4.9 \
 			http://github.com/buildroot/buildroot;master \
 			http://github.com/olofk/fusesoc;1.9 \
 			https://github.com/stffrdhrn/mor1kx-generic;master \
@@ -13,7 +13,7 @@ LINUX_DIR=linux
 ARCH 		?= openrisc
 
 # LINUX_CONFIG ?= $(BR_CONFIG)
-LINUX_CONFIG ?= de0_nano
+LINUX_CONFIG ?= de0_nano_plus
 BR_CONFIG ?= de0_or1k
 
 CPIOGZ ?= output/images/rootfs.cpio.gz
