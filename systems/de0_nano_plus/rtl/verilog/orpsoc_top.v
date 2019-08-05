@@ -907,6 +907,16 @@ assign  wbs_d_spi2_rty_o = 0;
 assign  spi2_hold_n_o = 1;
 assign  spi2_w_n_o = 1;
 
+parameter SPI2_INVERT_DATA	=0;
+parameter SPI2_INVERT_SS	=0;
+parameter SPI2_INVERT_CLK	=0;
+
+wire spi2_ss_o_0,spi2_sck_o_0,spi2_mosi_o_0;
+
+assign spi2_ss_o=spi2_ss_o_0 ^ SPI2_INVERT_SS;
+assign spi2_sck_o=spi2_sck_o_0 ^ SPI2_INVERT_CLK;
+assign spi2_mosi_o=spi2_mosi_o_0 ^ SPI2_INVERT_DATA;
+
 simple_spi spi2(
 	// Wishbone slave interface
 	.clk_i	(wb_clk),
@@ -921,12 +931,12 @@ simple_spi spi2(
 
 	// Outputs
 	.inta_o		(spi2_irq),
-	.sck_o		(spi2_sck_o),
-	.ss_o		(spi2_ss_o),
-	.mosi_o		(spi2_mosi_o),
+	.sck_o		(spi2_sck_o_0),
+	.ss_o		(spi2_ss_o_0),
+	.mosi_o		(spi2_mosi_o_0),
 
 	// Inputs
-	.miso_i		(spi2_miso_i)
+	.miso_i		(spi2_miso_i ^ SPI2_INVERT_DATA)
 );
 
 ////////////////////////////////////////////////////////////////////////
@@ -1006,7 +1016,7 @@ assign or1k_irq[4] = eth0_irq;
 assign or1k_irq[5] = 0;
 assign or1k_irq[6] = spi0_irq;
 assign or1k_irq[7] = spi1_irq;
-assign or1k_irq[8] = spi1_irq;
+assign or1k_irq[8] = spi2_irq;
 assign or1k_irq[9] = 0;
 assign or1k_irq[10] = i2c0_irq;
 assign or1k_irq[11] = i2c1_irq;

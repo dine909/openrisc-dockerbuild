@@ -1,7 +1,7 @@
 From cdc78444de2de1131da5a60994d527a89fd4f8bb Mon Sep 17 00:00:00 2001
 From: Your Name <you@example.com>
 Date: Wed, 31 Jul 2019 22:17:06 +0000
-Subject: [PATCH 1/7] de0_nano changes
+Subject: [PATCH 1/8] de0_nano changes
 
 ---
  arch/openrisc/boot/dts/de0_nano.dts      |  2 +-

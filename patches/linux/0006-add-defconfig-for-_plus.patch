@@ -1,7 +1,7 @@
 From 8b7cde75167e28281221d9df78617c539a4966f9 Mon Sep 17 00:00:00 2001
 From: dine <dine@none>
 Date: Sun, 4 Aug 2019 23:45:00 +0000
-Subject: [PATCH 6/7] add defconfig for _plus
+Subject: [PATCH 6/8] add defconfig for _plus
 
 ---
  arch/openrisc/configs/de0_nano_plus_defconfig | 115 ++++++++++++++++++++++++++

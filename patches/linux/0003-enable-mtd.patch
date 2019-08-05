@@ -1,7 +1,7 @@
 From cd2923409837610ddba865ef295dc3ec1839351f Mon Sep 17 00:00:00 2001
 From: Your Name <you@example.com>
 Date: Sun, 4 Aug 2019 17:07:20 +0000
-Subject: [PATCH 3/7] enable mtd
+Subject: [PATCH 3/8] enable mtd
 
 ---
  arch/openrisc/boot/dts/de0_nano.dts      | 15 +++++----------

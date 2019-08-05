@@ -1,7 +1,7 @@
 From d6dd4b3ceb07863718ff6857edf80336bebbe995 Mon Sep 17 00:00:00 2001
 From: dine <dine@none>
 Date: Mon, 5 Aug 2019 00:41:16 +0000
-Subject: [PATCH 7/7] add oc eth
+Subject: [PATCH 7/8] add oc eth
 
 ---
  arch/openrisc/boot/dts/de0_nano_plus.dts      |    6 +

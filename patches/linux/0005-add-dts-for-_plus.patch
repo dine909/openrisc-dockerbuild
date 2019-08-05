@@ -1,7 +1,7 @@
 From c3b5536ea2271b6224026bbab97e9fc71c0bbed5 Mon Sep 17 00:00:00 2001
 From: dine <dine@none>
 Date: Sun, 4 Aug 2019 23:17:39 +0000
-Subject: [PATCH 5/7] add dts for _plus
+Subject: [PATCH 5/8] add dts for _plus
 
 ---
  arch/openrisc/boot/dts/de0_nano_plus.dts | 153 +++++++++++++++++++++++++++++++
