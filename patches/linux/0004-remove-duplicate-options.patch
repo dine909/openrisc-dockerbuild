@@ -1,7 +1,7 @@
-From 5706b1bd3aa039a9ec9d7ec9da6d4de1502179a5 Mon Sep 17 00:00:00 2001
+From b2fe69d28fb4b58505da1c917539948dd68d343b Mon Sep 17 00:00:00 2001
 From: dine <dine@none>
 Date: Sun, 4 Aug 2019 23:16:20 +0000
-Subject: [PATCH 4/5] remove duplicate options
+Subject: [PATCH 4/7] remove duplicate options
 
 ---
  arch/openrisc/configs/de0_nano_defconfig | 2 --

@@ -1,0 +1,8 @@
+*.jic
+*.map
+*.ub
+*.ub.hex
+._*
+build/*
+.vscode/*
+vmlinux*

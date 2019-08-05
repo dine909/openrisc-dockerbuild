@@ -92,7 +92,8 @@ genconfig-buildroot:
 	grep -v ^\# src/buildroot/.config | grep  . > $(BR_CONFIG_FILE)
 
 genconfig-linux: 
-	grep -v ^\# src/$(LINUX_DIR)/.config | grep  . > $(LINUX_CONFIG_FILE)
+	cat src/$(LINUX_DIR)/.config | grep  . > $(LINUX_CONFIG_FILE)
+	# grep -v ^\# src/$(LINUX_DIR)/.config | grep  . > $(LINUX_CONFIG_FILE)
 
 
 # buildroot-prepare: src/buildroot/.config
@@ -145,15 +146,16 @@ FIND_PATCHES=$(shell find patches/$(call WORDHY,$1,2) -name *.patch | sort )
 
 patch-%: src/%
 	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,2)
-	cd src/$(call WORDHY,$@,2) && git checkout origin_tag && \
+	@cd src/$(call WORDHY,$@,2) && git checkout origin_tag && \
 		[ "" != "$(call FIND_PATCHES,$@)" ] &&  git am $(addprefix ../../,$(call FIND_PATCHES,$@)) || echo no patches for $(call WORDHY,$@,2)
 
 genpatches-%:
 	@mkdir -p $(PATCH_DIR)/$(call WORDHY,$@,2)
-	cd src/$(call WORDHY,$@,2) && git format-patch origin_tag -o ../../$(PATCH_DIR)/$(call WORDHY,$@,2)
+	@rm $(PATCH_DIR)/$(call WORDHY,$@,2)/*.patch
+	@cd src/$(call WORDHY,$@,2) && git format-patch origin_tag -o ../../$(PATCH_DIR)/$(call WORDHY,$@,2)
 
 buildroot-%: 
-	$(MAKE) -C src/buildroot $(call WORDHY,$@,2)
+	@$(MAKE) -C src/buildroot $(call WORDHY,$@,2)
 
 linux-%: 
 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C src/$(LINUX_DIR) $(call WORDHY,$@,2)
