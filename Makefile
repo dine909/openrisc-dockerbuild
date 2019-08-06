@@ -1,7 +1,7 @@
 
 # LINUX_BRANCH=		v5.2
 include patchy.mk
-GITS=		ssh://dine@192.168.1.63:/Users/dine/Documents/openriscmerge/linux;b4.9 \
+GITS=		ssh://dine@192.168.1.63:/Users/dine/Documents/openriscmerge/linux;or1k-v4.9 \
 			http://github.com/buildroot/buildroot;master \
 			http://github.com/olofk/fusesoc;1.9 \
 			https://github.com/stffrdhrn/mor1kx-generic;master \
@@ -52,7 +52,9 @@ PATCH_DIR = patches
 VMLINUX = vmlinux
 
 SYSNAME=de0_nano_plus
-OUTPUT_SOF = build/$(SYSNAME)_0/bld-quartus/$(SYSNAME)_0.sof
+OUTPUT_SYS_DIR=build/$(SYSNAME)_0
+QUARTUS_DIR= $(OUTPUT_SYS_DIR)/bld-quartus
+OUTPUT_SOF = $(QUARTUS_DIR)/$(SYSNAME)_0.sof
 
 .PRECIOUS = $(GCC_TARGET) src/$(LINUX_DIR)/.config src/buildroot/.config $(BR_CPIOGZ) $(FUSESOC_CONF) $(FUSESOC_BIN)
 all: 
@@ -134,10 +136,20 @@ $(FUSESOC_CONF): $(FUSESOC_BIN) src/mor1kx-generic src/or1k_marocchino
 	@mkdir -p $(dir $@)
 	# @touch $@
 
+SYSDEPS_GEN=$(shell find $(OUTPUT_SYS_DIR) -name *.conf -o -name *.v -o -name *.h -o -name *.vh | grep -v \/db\/)
+SYSDEPS=$(shell find systems/$(SYSNAME) -name *.conf -o -name *.v -o -name *.h -o -name *.vh | grep -v \/db\/)
+GEN_TARGET=$(OUTPUT_SYS_DIR)/src/de0_nano_plus_0/rtl/verilog/orpsoc_top.v
+
+sysdeps:
+	echo $(SYSDEPS)
+
 $(SYSNAME): $(OUTPUT_SOF)
 
-$(OUTPUT_SOF): $(FUSESOC_CONF) 
-	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc build $(SYSNAME)
+$(OUTPUT_SOF): $(GEN_TARGET) $(SYSDEPS_GEN)
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper $(MAKE) -C $(QUARTUS_DIR) 
+
+$(GEN_TARGET): $(FUSESOC_CONF) $(SYSDEPS)
+	@XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc build --setup $(SYSNAME)
 
 # de0_nano_pgm: build/de0_nano_0/bld-quartus/de0_nano_0.sof
 	# @XDG_DATA_HOME=$(XDG_CONFIG_HOME) XDG_CONFIG_HOME=$(XDG_CONFIG_HOME) quartus_wrapper fusesoc pgm de0_nano
