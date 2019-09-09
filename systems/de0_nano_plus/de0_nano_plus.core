@@ -7,8 +7,8 @@ depend =
  i2c-1.13
  jtag_tap-1.13
  mor1kx-3.1
-# or1200-r2
-# or1k_marocchino
+ or1200-r2
+ or1k_marocchino
  or1k_bootloaders-0.9
  simple_spi-1.6
  uart16550-1.5.4

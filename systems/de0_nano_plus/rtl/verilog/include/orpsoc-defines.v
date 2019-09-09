@@ -34,13 +34,10 @@
 //////////////////////////////////////////////////////////////////////
 
 // Included modules: define to include
-// `define OR1KM
 `define ETHERNET
 
-`ifndef OR1KM
-    `define MOR1KX
-    `ifndef MOR1KX
-        `define OR1200
-    `endif
-`endif
+// `define OR1KM
+`define MOR1KX
+// `define OR1200
+
 // end of included module defines - keep this comment line here

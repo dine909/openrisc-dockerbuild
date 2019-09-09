@@ -45,16 +45,7 @@ module orpsoc_top #(
         parameter       i2c0_sadr = 8'h45,
         parameter       i2c1_sadr = 8'h45,
 	
-	parameter MEM_SIZE = 32'h02000000,
-    parameter pipeline = "CAPPUCCINO",
-    parameter feature_immu = "ENABLED",
-    parameter feature_dmmu = "ENABLED",
-    parameter feature_instructioncache = "ENABLED",
-    parameter feature_datacache = "ENABLED",
-    parameter feature_debugunit = "ENABLED",
-    parameter feature_cmov = "ENABLED",
-    parameter feature_ext = "ENABLED",
-    parameter option_rf_num_shadow_gpr = 0
+	
 )(
 	input		sys_clk_pad_i,
 	input		rst_n_pad_i,
@@ -326,6 +317,17 @@ or1200_top0 (
 `endif
 
 `ifdef OR1KM
+
+parameter MEM_SIZE = 32'h02000000,
+parameter pipeline = "CAPPUCCINO",
+parameter feature_immu = "ENABLED",
+parameter feature_dmmu = "ENABLED",
+parameter feature_instructioncache = "ENABLED",
+parameter feature_datacache = "ENABLED",
+parameter feature_debugunit = "ENABLED",
+parameter feature_cmov = "ENABLED",
+parameter feature_ext = "ENABLED",
+parameter option_rf_num_shadow_gpr = 0
 
 wire or1k_clk;
 

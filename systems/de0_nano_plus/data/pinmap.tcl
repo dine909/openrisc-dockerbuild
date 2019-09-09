@@ -74,14 +74,14 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi1_ss_o
 #       SCK  <-> GPIO_2[4] (Pin  9, bottom header)
 #       SS   <-> GPIO_2[5] (Pin 10, bottom header)
 #
-set_location_assignment PIN_N16 -to spi2_sck_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_sck_o
-set_location_assignment PIN_P16 -to spi2_miso_i
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_miso_i
-set_location_assignment PIN_L15 -to spi2_ss_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_ss_o
-set_location_assignment PIN_K16 -to spi2_mosi_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_mosi_o
+# set_location_assignment PIN_N16 -to spi2_sck_o
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_sck_o
+# set_location_assignment PIN_P16 -to spi2_miso_i
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_miso_i
+# set_location_assignment PIN_L15 -to spi2_ss_o
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_ss_o
+# set_location_assignment PIN_K16 -to spi2_mosi_o
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi2_mosi_o
 
 #
 # SDRAM
@@ -202,3 +202,25 @@ set_location_assignment PIN_T8  -to gpio1_i[1]
 set_location_assignment PIN_B9  -to gpio1_i[2]
 set_location_assignment PIN_M15 -to gpio1_i[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to gpio1_i[*]
+
+# Ethernet
+set_location_assignment PIN_T14 -to eth0_rst_n_pad_o
+set_location_assignment PIN_J14 -to eth0_md_pad_io
+set_location_assignment PIN_K15 -to eth0_mdc_pad_o
+set_location_assignment PIN_L13 -to eth0_rx_data_pad_i[3]
+set_location_assignment PIN_N14 -to eth0_rx_data_pad_i[2]
+set_location_assignment PIN_P14 -to eth0_rx_data_pad_i[1]
+set_location_assignment PIN_N16 -to eth0_rx_data_pad_i[0]
+set_location_assignment PIN_P16 -to eth0_rx_dv_pad_i
+set_location_assignment PIN_L15 -to eth0_rx_clk_pad_i
+set_location_assignment PIN_K16 -to eth0_rx_err_pad_i
+
+set_location_assignment PIN_N11 -to eth0_tx_clk_pad_i
+set_location_assignment PIN_P9 -to eth0_tx_en_pad_o
+set_location_assignment PIN_R10 -to eth0_tx_data_pad_o[0]
+set_location_assignment PIN_R11 -to eth0_tx_data_pad_o[1]
+set_location_assignment PIN_T11 -to eth0_tx_data_pad_o[2]
+set_location_assignment PIN_T12 -to eth0_tx_data_pad_o[3]
+set_location_assignment PIN_T13 -to eth0_col_pad_i
+set_location_assignment PIN_T15 -to eth0_crs_pad_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to eth0_[*]

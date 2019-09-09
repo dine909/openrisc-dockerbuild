@@ -136,8 +136,8 @@ $(FUSESOC_CONF): $(FUSESOC_BIN) src/mor1kx-generic src/or1k_marocchino
 	@mkdir -p $(dir $@)
 	# @touch $@
 
-SYSDEPS_GEN=$(shell find $(OUTPUT_SYS_DIR) -name *.conf -o -name *.v -o -name *.h -o -name *.vh | grep -v \/db\/)
-SYSDEPS=$(shell find systems/$(SYSNAME) -name *.conf -o -name *.v -o -name *.h -o -name *.vh | grep -v \/db\/)
+SYSDEPS_GEN=$(shell find $(OUTPUT_SYS_DIR) -name *.conf -o -name *.v -o -name *.h -o -name *.vh  -o -name *.tcl | grep -v \/db\/)
+SYSDEPS=$(shell find systems/$(SYSNAME) -name *.conf -o -name *.v -o -name *.h -o -name *.vh -o -name *.tcl -o -name *.core | grep -v \/db\/)
 GEN_TARGET=$(OUTPUT_SYS_DIR)/src/de0_nano_plus_0/rtl/verilog/orpsoc_top.v
 
 sysdeps:
